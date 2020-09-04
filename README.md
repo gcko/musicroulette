@@ -1,4 +1,5 @@
-Write-Wall
+Music Roulette
 ==========
 
-A google widget very similar to "Write Space", Write Wall goes a step further and syncs text with the logged in Google Account
+A Chrome extension that allows you to click a button and 
+get a semi-random music video from YouTube. 
