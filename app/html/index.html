@@ -1,0 +1,50 @@
+<!--  Copyright 2012-2020 Jared M. Scott !-->
+<!--
+ This work is licensed under the Creative Commons Attribution 3.0 Un-ported License.
+  To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+  or send a letter to
+      Creative Commons,
+      444 Castro Street, Suite 900,
+      Mountain View, California, 94041, USA.
+!-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!=='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TFBR6GR');</script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <!-- End Google Tag Manager -->
+    <title>Simple Text Sync</title>
+    <link
+      href="/css/main.css"
+      type="text/css"
+      media="screen"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TFBR6GR"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <section class="buttons">
+      <div id="login-container" class="hidden">
+        <button id="login" type="button">Login</button>
+        <p>you must login prior to finding music!</p>
+      </div>
+      <button id="find-music" type="button">Music Roulette!</button>
+      <button id="wedding-music" type="button">Wedding Music Roulette!</button>
+    </section>
+    <section id="results"></section>
+
+    <script src="/js/vendor/lodash-4.17.15.js"></script>
+    <script src="/js/vendor/crypto-core-4.0.0.js"></script>
+    <script src="/js/vendor/crypto-md5-4.0.0.js"></script>
+    <script src="/js/main.js"></script>
+  </body>
+</html>

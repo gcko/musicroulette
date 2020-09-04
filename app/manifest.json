@@ -1,0 +1,28 @@
+{
+    "name": "Goodnight, Sweet Dreams",
+    "version": "0.1",
+    "manifest_version": 2,
+    "incognito": "split",
+    "description": "A simple app that finds and plays music videos from YouTube",
+    "icons": {
+        "16": "images/icon-16.png",
+        "19": "images/icon.png",
+        "48": "images/icon-48.png",
+        "64": "images/icon-64.png",
+        "128": "images/icon-128.png",
+        "512": "images/icon-512.png"
+    },
+    "browser_action": {
+        "default_icon": "images/icon.png"
+    },
+    "content_security_policy": "script-src 'self' 'sha256-NrhH/ps5CJV4jZfC+l7Q0FuDM+Zea2bP+sUEfF4F5PA=' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com; object-src 'self'",
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    },
+    "permissions": [
+        "tabs",
+        "storage"
+    ]
+}

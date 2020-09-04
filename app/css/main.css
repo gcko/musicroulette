@@ -1,0 +1,51 @@
+/* Copyright 2012-2020 Jared M. Scott */
+/**
+ * This work is licensed under the Creative Commons Attribution 3.0 Un-ported License.
+ *  To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+ *  or send a letter to
+ *      Creative Commons,
+ *      444 Castro Street, Suite 900,
+ *      Mountain View, California, 94041, USA.
+ */
+body {
+  background-color: #e5e5e5;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+iframe {
+  border-width: 0;
+}
+
+.media-container {
+  width: 90vw;
+  height: calc(100vw / 1.8);
+}
+
+button {
+  padding: 14px 12px;
+  border-radius: 7px;
+  color: #efefef;
+  margin-left: 1rem;
+  background-color: #1b6db3;
+  font-size: 1.2rem;
+}
+
+button:hover {
+  background-color: #4a9ce2;
+  cursor: pointer;
+}
+
+section.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+section#results {
+  color: #161616;
+  margin-left: 1rem;
+}
+
+.hidden {
+  display: none;
+}
