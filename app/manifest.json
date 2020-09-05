@@ -12,6 +12,11 @@
         "128": "images/icon-128.png",
         "512": "images/icon-512.png"
     },
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArMvK/vwm/VgCxgol8RLKPQgEsnGh/v78gRaXb5wPHkAKB3iFYogzOCR2TZYR4Vrkh5uEIkNfgDQ4XUW4vYmCTlypeuVlFBJxM0HGTtBxNW9x5wwHGh7I/wtLh64gVqXQqS/1HNet+2egojfc9QE5UoPXcc2Z3+xNceGAc27VC/e/ACREFXcpg/993Ib7+qROYB5yoXCK2lJgaJ6ryuj8f5QaxIo8Yjfzy1fSVyHGLfLo+ZcBrzOdz0fiD4j/tcv7GsMq79beEcyPrMuAQ5feYSPf0VVHR3xH32hsD9vxldVT5+WZc+lPa/EOZU/qKW22ntEIYu/u0N5Zhqr57R41ywIDAQAB",
+    "oauth2": {
+        "client_id": "900938017335-jpaqa4r02mjulqk40dcsa7ejak7fbk8v.apps.googleusercontent.com",
+        "scopes": ["https://www.googleapis.com/auth/youtube.readonly"]
+    },
     "browser_action": {
         "default_icon": "images/icon.png"
     },
@@ -23,6 +28,7 @@
     },
     "permissions": [
         "tabs",
-        "storage"
+        "storage",
+        "identity"
     ]
 }
