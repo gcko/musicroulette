@@ -1,0 +1,150 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+#spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    overflow: hidden;
+    /*background: #F44336 ;*/
+    background-size: cover;
+}
+
+.spin-main-box {
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+.spin-main-box:after {
+    position: absolute;
+    content: '\02190'; /* escaped unicode left arrow https://www.toptal.com/designers/htmlarrows/ */
+    width: 32px;
+    height: 32px;
+    right: -42px;
+    top: 53%;
+    line-height: 0;
+    font-size: 3rem;
+    transform: translateY(-50%);
+}
+.box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 50%;
+    border: 10px solid #272727;
+    box-shadow: 0 0 0 10px #fff;
+    overflow: hidden;
+    transition: all ease 5s;
+}
+.span {
+    width: 50%;
+    height: 50%;
+    display: inline-block;
+    position: absolute;
+}
+.span1 {
+    clip-path: polygon(0 92%, 100% 50%, 0 8%);
+    background-color: rgb(255,198,88);
+    top: 120px;
+    left: 0;
+}
+.span2 {
+    clip-path: polygon(100% 92%, 0 50%, 100% 8%);
+    background-color: rgb(245,74,91);
+    top: 120px;
+    right: 0;
+}
+.span3 {
+    clip-path: polygon(50% 0%, 8% 100%, 92% 100%);
+    background-color: rgb(121,185,82);
+    bottom: 0;
+    left: 120px;
+}
+.span4 {
+    clip-path: polygon(50% 100%, 92% 0, 8% 0);
+    background-color: #3f51b5;
+    top: 0;
+    left: 120px;
+}
+.up-z-index {
+    z-index: 1;
+}
+
+/* Adjust text placement on the wedges */
+.box1 .span3 strong {
+    transform: translate(-50%, -50%) rotate(-270deg);
+}
+.box1 .span1 strong,
+.box2 .span1 strong {
+    transform: translate(-50%, -50%) rotate(180deg);
+}
+.box2 .span3 strong {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+.box1 .span4 strong,
+.box2 .span4 strong {
+    transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.box2 {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-135deg);
+}
+.span strong{
+    text-align: center;
+    width: 65%;
+    height: 2rem;
+    line-height: 2rem;
+    padding-left: 10px;
+    text-shadow: 0 0 15px #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.span strong a {
+    color: #e5e5e5;
+}
+.span strong a:hover {
+    color: #fffefe;
+}
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    background-color: #ff5722;
+    color: #fff;
+    box-shadow: 0 5px 20px #000;
+    font-weight: bold;
+    font-size: 22px;
+    cursor: pointer;
+}
+#spin:active{
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+}
+
+#spin-main-box.animate:after {
+    animation: animateArrow 0.7s ease infinite;
+}
+@keyframes animateArrow {
+    50% {
+        right: -40px;
+    }
+}
