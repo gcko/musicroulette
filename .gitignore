@@ -1,2 +1,5 @@
 node_modules/
 .idea/
+
+# Don't version as it has your API keys in it
+app/js/config.js
