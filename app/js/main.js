@@ -35,9 +35,8 @@ function getKindOfRandomNum(upperBound = 50) {
   const KEY_MUSIC = 'music',
     KEY_WEDDING = 'wedding',
     KEY_TOP10 = 'top10',
-    YOUTUBE_API_KEY = '***REMOVED***',
-    CLIENT_ID =
-      '900938017335-jpaqa4r02mjulqk40dcsa7ejak7fbk8v.apps.googleusercontent.com',
+    YOUTUBE_API_KEY = Config.YOUTUBE_API_KEY,
+    CLIENT_ID = Config.CLIENT_ID,
     loginContainer = document.getElementById('login-container'),
     btnLogin = document.getElementById('login'),
     btnWedding = document.getElementById('wedding-music'),
