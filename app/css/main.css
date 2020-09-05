@@ -13,27 +13,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* I have absolutely no clue as to why, but there is an additional
+  gutter on the right side and I cannot for the life of me find it! */
+section {
+  margin-left: -15vw;
+}
+
 iframe {
   border-width: 0;
 }
 
 .media-container {
-  width: 90vw;
-  height: calc(100vw / 1.8);
+  width: 640px;
+  height: 370px;
 }
 
-button {
-  padding: 14px 12px;
-  border-radius: 7px;
-  color: #efefef;
-  margin-left: 1rem;
-  background-color: #1b6db3;
-  font-size: 1.2rem;
+a {
+  color: #bb0c7c;
+  font-size: 1.1rem;
+  text-decoration: none;
 }
 
-button:hover {
-  background-color: #4a9ce2;
-  cursor: pointer;
+a:hover {
+  color: #E244A1;
 }
 
 section.buttons {
@@ -41,11 +43,29 @@ section.buttons {
   justify-content: center;
 }
 
+.buttons button {
+  padding: 14px 12px;
+  border-radius: 7px;
+  color: #efefef;
+  margin-left: 1rem;
+  background-color: #1b6db3;
+  font-size: 1.2rem;
+  border: 0 none;
+  box-shadow: 0 0px 4px -1px #000;
+}
+
+.buttons button:hover {
+  background-color: #4a9ce2;
+  cursor: pointer;
+}
+
 section#results {
   color: #161616;
-  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 100px;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }

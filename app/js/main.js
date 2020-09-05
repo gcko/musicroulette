@@ -18,33 +18,25 @@ function removeClass(el, cls) {
   return el.classList.remove(cls);
 }
 
-function getKindOfRandomNum(upperBound = 50) {
-  if (upperBound < 0 || upperBound > 100) {
-    throw new RangeError(
-      `upperBound: '${upperBound}' needs to be between 0 and 100`
-    );
-  }
-  const randomNum = Math.random() * 100;
-  return randomNum > upperBound
-    ? Math.floor(randomNum % upperBound)
-    : Math.floor(randomNum);
-}
-
 /* global chrome:readonly, _:readonly */
 ((chrome, gapi) => {
-  const KEY_MUSIC = 'music',
-    KEY_WEDDING = 'wedding',
+  const KEY_WEDDING = 'wedding',
     KEY_TOP10 = 'top10',
     YOUTUBE_API_KEY = Config.YOUTUBE_API_KEY,
-    CLIENT_ID = Config.CLIENT_ID,
     loginContainer = document.getElementById('login-container'),
     btnLogin = document.getElementById('login'),
     btnWedding = document.getElementById('wedding-music'),
     btnEl = document.getElementById('find-music'),
+    btnSpinWheel = document.getElementById('spin'),
     resultsEl = document.getElementById('results'),
+    spinSectionEl = document.getElementById('spinner-container'),
+    wheelWedgeEls = spinSectionEl.getElementsByTagName('strong'),
     storage = chrome.storage,
     // TODO use storage instead, this is for testing
     simpleCache = {};
+
+  // Store the winning element after each spin
+  let winningEl;
 
   function isSignedIn() {
     return gapi.auth2.getAuthInstance().isSignedIn.get();
@@ -81,40 +73,31 @@ function getKindOfRandomNum(upperBound = 50) {
       );
   }
 
-  function handleResponse(response, cacheKey) {
+  function handleComplexResponse(response, cacheKey) {
     // cache the response
     simpleCache[cacheKey] = response;
 
     const result = response.result;
-    // Handle the results here (response.result has the parsed body).
-    let itemsHtml = '';
     // Show some of the basic attributes of each video
     if (result.items && result.items instanceof Array) {
-      // pick a random item
-      let item = result.items[getKindOfRandomNum()];
-      // Check if snippet.resourceId.videoId is used
-      if (item.snippet?.resourceId?.videoId) {
-        // set the value to item.id
-        item.id = item.snippet.resourceId.videoId;
+      // populate the wheel with 8 items from the response
+      for (let i = 0; i < 8; i += 1) {
+        wheelWedgeEls[i].innerText = result.items[i].snippet.title;
+        wheelWedgeEls[i].dataset.item = JSON.stringify(result.items[i]);
       }
-      itemsHtml = createItemHtml(item);
+      // show the spinner if it wasn't shown already
+      removeClass(spinSectionEl, 'hidden');
     }
-    resultsEl.innerHTML = itemsHtml;
-  }
-
-  function createItemsHtml(items) {
-    let itemsHtml = '';
-    items.forEach((item) => {
-      itemsHtml += createItemHtml(item);
-    });
-    return itemsHtml;
   }
 
   function createItemHtml(item) {
     return `
-                <p><a href="https://www.youtube.com/watch?v=${item.id}">${item.snippet.title}</a></p>
-                <iframe class="media-container" src="https://www.youtube.com/embed/${item.id}" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              `;
+        <iframe 
+          class="media-container" 
+          src="https://www.youtube.com/embed/${item.id}" 
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen></iframe>
+        `;
   }
 
   function getPlaylist(playlistId) {
@@ -122,7 +105,7 @@ function getKindOfRandomNum(upperBound = 50) {
       // TODO begin using Chrome Storage, use CryptoJS.MD5
       //  to create a hash that can be authenticated against
       // use what is in the cache
-      return handleResponse(simpleCache[KEY_WEDDING], KEY_WEDDING);
+      return handleComplexResponse(simpleCache[KEY_WEDDING], KEY_WEDDING);
     }
 
     return gapi.client.youtube.playlistItems
@@ -132,7 +115,7 @@ function getKindOfRandomNum(upperBound = 50) {
         playlistId: playlistId,
       })
       .then(
-        (response) => handleResponse(response, KEY_WEDDING),
+        (response) => handleComplexResponse(response, KEY_WEDDING),
         (err) => console.error(err)
       );
   }
@@ -140,7 +123,7 @@ function getKindOfRandomNum(upperBound = 50) {
   // Make sure the client is loaded and sign-in is complete before calling this method.
   function getTop10() {
     if (simpleCache[KEY_TOP10] != null) {
-      return handleResponse(simpleCache[KEY_TOP10], KEY_TOP10);
+      return handleComplexResponse(simpleCache[KEY_TOP10], KEY_TOP10);
     }
     return gapi.client.youtube.videos
       .list({
@@ -152,7 +135,7 @@ function getKindOfRandomNum(upperBound = 50) {
         videoCategoryId: '10', // music category
       })
       .then(
-        (response) => handleResponse(response, KEY_TOP10),
+        (response) => handleComplexResponse(response, KEY_TOP10),
         (err) => console.error(err)
       );
   }
@@ -166,21 +149,6 @@ function getKindOfRandomNum(upperBound = 50) {
         console.error('No authorization. Error: ' + chrome.runtime.lastError);
       }
     });
-    // gapi.auth2
-    //   .init({
-    //     client_id: CLIENT_ID,
-    //     scope: 'https://www.googleapis.com/auth/youtube.readonly',
-    //   })
-    //   .then(() => {
-    //     if (!isSignedIn()) {
-    //       console.log('not logged in, show the button');
-    //       removeClass(loginContainer, 'hidden');
-    //     } else {
-    //       // logged in, load the client only
-    //       console.log('logged in, load the client only');
-    //       gapi.auth2.getAuthInstance().then(loadClient);
-    //     }
-    //   });
   });
   btnLogin.addEventListener('click', () => {
     authenticate()
@@ -196,6 +164,53 @@ function getKindOfRandomNum(upperBound = 50) {
   btnWedding.addEventListener('click', () => {
     getPlaylist(WEDDING_PLAYLIST_ID);
   });
+
+  function handleSpinClick() {
+    if (winningEl) {
+      // remove the link from the soon to be previous winning element
+      winningEl.classList.remove('up-z-index');
+      // Clicking on a 'roulette' button on the top would remove the a tag, so need to check for existence
+      if (winningEl.getElementsByTagName('a').length > 0) {
+        winningEl.getElementsByTagName(
+          'strong'
+        )[0].innerHTML = winningEl.getElementsByTagName('a')[0].innerText;
+      }
+    }
+    const min = 1024; //min value
+    const max = 9999; // max value
+    const deg = Math.floor(Math.random() * (min - max)) + max;
+
+    // rotate the wheel
+    document.getElementById('boxes').style.transform = `rotate(${deg}deg)`;
+
+    const mainSpinBoxEl = document.getElementById('spin-main-box');
+
+    function setWinner() {
+      // Get the height of the main spin box, divide by 2 to get the approximate location of the item to activate
+      const boundingBox = mainSpinBoxEl.getBoundingClientRect();
+      const targetX = boundingBox.right - 20;
+      const targetY = boundingBox.top + boundingBox.height / 2;
+      const elements = document.elementsFromPoint(targetX, targetY);
+      winningEl = elements.find((el) => el.tagName === 'SPAN');
+      winningEl.classList.add('up-z-index');
+      const winningElText = winningEl.getElementsByTagName('strong')[0];
+      const item = JSON.parse(winningElText.dataset.item);
+      winningEl.innerHTML = `
+        <strong>
+          <a href="https://www.youtube.com/watch?v=${item.id}" target="_blank" title="${winningElText.innerText}">${winningElText.innerText}</a>
+        </strong>
+        `;
+      resultsEl.innerHTML = createItemHtml(item);
+    }
+
+    mainSpinBoxEl.classList.remove('animate');
+    setTimeout(() => {
+      mainSpinBoxEl.classList.add('animate');
+      setWinner();
+    }, 5000);
+  }
+
+  btnSpinWheel.addEventListener('click', handleSpinClick);
 
   // get or create key to store data
   // storage.sync.get(STORAGE_KEY_MUSIC, (items) => {
