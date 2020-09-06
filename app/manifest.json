@@ -1,6 +1,6 @@
 {
     "name": "Music Roulette",
-    "version": "1.0",
+    "version": "1.0.1",
     "manifest_version": 2,
     "incognito": "split",
     "description": "A simple app that finds and plays music videos from YouTube",
